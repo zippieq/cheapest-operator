@@ -22,7 +22,7 @@ jobs:
           pip install -r requirements.txt
       - name: Start Flask
         run: |
-          flask --app app run
+          flask --app app run &
 
   run_tests:
     runs-on: ubuntu-latest
@@ -45,3 +45,5 @@ jobs:
         run: |
           pytest
           behave ./tests/features
+      - name: Stop Flask app
+        run: kill $(lsof -t -i:5000)
