@@ -16,7 +16,7 @@ To run the application, follow these steps:
 2. Clone the repository to your local machine.
 3. Install the required Python packages by running `pip install -r requirements.txt`.
 4. Start the Flask application by running `python app.py`.
-5. Upload a CSV file by sending a POST request to `http://localhost:5000/upload_csv/` with the CSV file in the `csv_file` parameter.
+5. Upload a CSV file by sending a POST request to `http://localhost:5000/upload_csv/` with the CSV file in the `file` parameter.
 6. Search for the lowest cost operator for a given phone number by sending a GET request to `http://localhost:5000/find-cheapest-operator?number=<phone_number>`.
 
 ## Next Steps
