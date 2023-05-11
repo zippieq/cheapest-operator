@@ -16,13 +16,15 @@ def step_impl(context):
 def step_impl(context):
     url = 'http://localhost:5000/upload-csv'
     response = requests.post(url)
+    print(response)
     context.response = response
 
 @then('the application should respond with status code {status_code:d}')
 def step_impl(context, status_code):
     assert context.response.status_code == status_code
 
-@then('I should be able to search for the lowest cost operator for a given phone number')
-def step_impl():
-    response = requests.get('http://localhost:5000/find-cheapest-operator/?number=123456789')
-    assert response.content == "The cheapest operator for 123456789 is Operator A with cost 1.0 and prefix 1234"
+@then('I should be able to search for number {phone_number} the lowest cost is {cost} for operator {operator} and prefix {prefix}')
+def step_impl(context, phone_number, cost, operator, prefix):
+    response = requests.get(f'http://localhost:5000/find-cheapest-operator?number={phone_number}')
+    print(response.text)
+    assert response.text == f"The cheapest operator for {phone_number} is {operator} with cost {cost} and prefix {prefix}"

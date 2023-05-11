@@ -5,7 +5,6 @@ upload_csv_blueprint = Blueprint('upload_csv', __name__)
 @upload_csv_blueprint.route('/upload-csv', methods=['POST'])
 def upload_csv():
     trie = current_app.config['trie']
-    print('nok')
     # Ensure that a file was uploaded
     if 'file' not in request.files:
         return 'No file uploaded.', 400
