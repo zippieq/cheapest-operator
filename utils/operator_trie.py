@@ -25,6 +25,8 @@ class OperatorTrie:
             if '$' in node:
                 min_cost = node['$']['min_cost']
                 operator = node['$']['operator']
+        if prefix == '':
+            return None, None, None
         return min_cost, operator, prefix
     def update_from_csv(self, csv_data):
         operator_name = ''

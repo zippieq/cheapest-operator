@@ -1,5 +1,6 @@
 import pytest
 from utils.operator_trie import OperatorTrie
+import csv
 
 @pytest.fixture
 def trie():
@@ -30,19 +31,12 @@ def test_search(trie):
     assert trie.search('12') == (0.3, 'Operator2', '12')
 
     # Test searching for a number that doesn't exist in the trie
-    assert trie.search('456') == (None, None, '45')
+    assert trie.search('456') == (None, None, None)
 
 def test_update_from_csv(trie):
-    csv_data = [
-        'Operator1:\n',
-        '123,0.5\n',
-        '12,0.3\n',
-        'Operator2:\n',
-        '234,0.2\n',
-        'Operator3:\n',
-        '456,0.6\n',
-    ]
-    trie.update_from_csv(csv_data)
+    with open("./tests/unit_tests/test.csv", 'rb') as csv_data:
+        trie.update_from_csv(csv_data.read().decode('utf-8').splitlines())
+
 
     assert trie.search('123') == (0.5, 'Operator1', '123')
     assert trie.search('12') == (0.3, 'Operator1', '12')
