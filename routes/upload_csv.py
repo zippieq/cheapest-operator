@@ -1,23 +1,25 @@
-from flask import Blueprint, request, current_app
+from flask import request, current_app, Blueprint
 
 upload_csv_blueprint = Blueprint('upload_csv', __name__)
-current_app.register_blueprint(upload_csv_blueprint)
-
-def read_csv_file(file):
-    for row in file.read().decode('utf-8').splitlines():
-        yield row.split(',')
 
 @upload_csv_blueprint.route('/upload-csv', methods=['POST'])
 def upload_csv():
-    trie = current_app.trie
+    trie = current_app.config['trie']
+    print('nok')
+    # Ensure that a file was uploaded
+    if 'file' not in request.files:
+        return 'No file uploaded.', 400
+    
     csv_file = request.files['file']
+    
+    # Read the file into memory
     csv_file.seek(0)
-    operator_name = ''
-    for row in read_csv_file(csv_file):
-        if row[0].startswith('Operator'):
-            operator_name = row[0].strip(':')
-        else:
-            prefix = row[0].strip()
-            cost = float(row[1].strip())
-            trie.insert(prefix, operator_name, cost)
-    return 'CSV uploaded successfully.'
+    csv_data = csv_file.read().decode('utf-8').splitlines()
+    
+    # Update the trie
+    try:
+        trie.update_from_csv(csv_data)
+    except Exception as e:
+        return f'Error updating trie: {str(e)}', 500
+    
+    return 'CSV uploaded successfully.', 200

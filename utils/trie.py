@@ -1,8 +1,8 @@
-class Trie:
+class OperatorTrie:
     def __init__(self):
         self.root = {}
 
-    def insert(self, word, operator_name, cost):
+    def update(self, word, operator_name, cost):
         node = self.root
         for char in word:
             node = node.setdefault(char, {})
@@ -26,3 +26,12 @@ class Trie:
                 min_cost = node['$']['min_cost']
                 operator = node['$']['operator']
         return min_cost, operator, prefix
+    def update_from_csv(self, csv_data):
+        operator_name = ''
+        for row in csv_data:
+            if row.startswith('Operator'):
+                operator_name = row.rstrip(':,')
+                print(operator_name)
+            else:
+                prefix, cost = row.split(',')
+                self.update(prefix.strip(), operator_name, float(cost.strip()))
